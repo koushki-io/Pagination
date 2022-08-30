@@ -10,16 +10,28 @@ const Content = () => {
     const [page, setpage] = useState(1)
     const [pagination, setpagination] = useState([])
     const [paginationEnd, setpaginationEnd] = useState([])
+    const [serch, setserch] = useState('')
+    const [serchPost, setserchPost] = useState([])
+    
 
+   const changeHandler=(e)=>{
+    setserch(e.target.value)
+    }
    useEffect(() => {
     setpagination(
-        posts.filter((item,index)=>!(index % 12))  
+        serchPost.filter((item,index)=>!(index % 12))  
     )
     setpaginationEnd(
-        posts.filter((item,index)=>!(index % 24))  
+        serchPost.filter((item,index)=>!(index % 24))  
     )
    
-   }, [posts])
+   }, [posts,serchPost])
+   useEffect(() => {
+    setserchPost(
+        posts.filter(item=>item.title.toLowerCase().includes(serch.toLowerCase().trim()))
+    )
+        console.log(posts.length / serchPost.length);
+   }, [serch,posts])
     
     useEffect(() => {
         dispatch(PostAction())
@@ -28,11 +40,12 @@ const Content = () => {
     <div className={styles.Content}>
         <h2>Post</h2>
         <div className={styles.SerchBox}>
-            <input type="text" />
+            <input type="text" onChange={changeHandler} />
             <button>Serch</button>
+            <h4>{serchPost.length}</h4>
         </div>
         <div className={styles.Post}>
-            {posts.slice((page -1) * 12 ,page * 12).map((item)=>{
+            {serchPost.slice((page -1) * 12 ,page * 12).map((item)=>{
                 
                 return(
                     <div key={item.id} className={styles.ContentItem}>
@@ -48,30 +61,54 @@ const Content = () => {
         </div>
       
  <Pagination>
-      <Pagination.First   onClick={()=>{
+      <Pagination.First 
+        disabled={page==1}  onClick={()=>{
         setpage(last=> last - 1)
     }} />
 
-      {paginationEnd.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
+      {(posts.length / serchPost.length) < 1.66 
+                ?
+      paginationEnd.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
       onClick={()=>{
         setpage(index + 1)
       }}
       >{index + 1}</Pagination.Item>
+      )
+                :
 
-      )}
+                pagination.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
+                onClick={()=>{
+                  setpage(index + 1)
+                }}
+                >{index + 1}</Pagination.Item>
+                )
+    
+        }
+
+
+      {(posts.length / serchPost.length) < 1.66  
+
+      &&
       <Pagination.Ellipsis />
-      <Pagination.Item 
+      }
+      {(posts.length / serchPost.length) < 1.66 
+      &&
+        <Pagination.Item 
       onClick={()=>{
         setpage(pagination.length)
       }}
       
       active={page===pagination.length}>{pagination.length} </Pagination.Item>
 
+      }
       
-      <Pagination.Last onClick={()=>{
+
+      
+      <Pagination.Last
+      disabled={page===pagination.length} onClick={()=>{
                 setpage(last=>last+1)
             }}
-    
+  
       />
      
     </Pagination>
