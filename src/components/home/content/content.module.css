@@ -1,0 +1,27 @@
+.Post{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 5px;
+}
+.Content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.SerchBox input{
+    margin-bottom: 20px;
+}
+.Content h2{
+    align-self: start;
+}
+
+
+.ContentItem{
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+
+
+}
