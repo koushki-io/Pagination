@@ -3,6 +3,7 @@ import styles from './content.module.css'
 import { useDispatch , useSelector} from 'react-redux'
 import { PostAction } from '../../redux/action'
 import {Pagination} from 'react-bootstrap';
+import Example from '../modal/Edite';
 
 const Content = () => {
     const dispatch= useDispatch()
@@ -30,7 +31,7 @@ const Content = () => {
     setserchPost(
         posts.filter(item=>item.title.toLowerCase().includes(serch.toLowerCase().trim()))
     )
-        console.log(posts.length / serchPost.length);
+        
    }, [serch,posts])
     
     useEffect(() => {
@@ -41,7 +42,8 @@ const Content = () => {
         <h2>Post</h2>
         <div className={styles.SerchBox}>
             <input type="text" onChange={changeHandler} />
-            <button>Serch</button>
+            <button 
+            >Serch</button>
             <h4>{serchPost.length}</h4>
         </div>
         <div className={styles.Post}>
@@ -59,60 +61,68 @@ const Content = () => {
             })}
           
         </div>
-      
- <Pagination>
-      <Pagination.First 
-        disabled={page==1}  onClick={()=>{
-        setpage(last=> last - 1)
-    }} />
 
-      {(posts.length / serchPost.length) < 1.66 
-                ?
-      paginationEnd.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
-      onClick={()=>{
-        setpage(index + 1)
+        {!(serchPost.length==0) &&
+
+<Pagination>
+<Pagination.First 
+  disabled={page==1}  onClick={()=>{
+  setpage(last=> last - 1)
+}} />
+
+{(posts.length / serchPost.length) < 1.66 
+          ?
+paginationEnd.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
+onClick={()=>{
+  setpage(index + 1)
+}}
+>{index + 1}</Pagination.Item>
+)
+          :
+
+          pagination.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
+          onClick={()=>{
+            setpage(index + 1)
+          }}
+          >{index + 1}</Pagination.Item>
+          )
+
+  }
+
+
+{(posts.length / serchPost.length) < 1.66  
+
+&&
+<Pagination.Ellipsis />
+}
+{(posts.length / serchPost.length) < 1.66 
+&&
+  <Pagination.Item 
+onClick={()=>{
+  setpage(pagination.length)
+}}
+
+active={page===pagination.length}>{pagination.length} </Pagination.Item>
+
+}
+
+
+
+<Pagination.Last
+disabled={page===pagination.length} onClick={()=>{
+          setpage(last=>last+1)
       }}
-      >{index + 1}</Pagination.Item>
-      )
-                :
 
-                pagination.map((item,index)=><Pagination.Item key={index} active={index + 1 === page}
-                onClick={()=>{
-                  setpage(index + 1)
-                }}
-                >{index + 1}</Pagination.Item>
-                )
-    
+/>
+
+</Pagination>
+        
+        
+        
         }
-
-
-      {(posts.length / serchPost.length) < 1.66  
-
-      &&
-      <Pagination.Ellipsis />
-      }
-      {(posts.length / serchPost.length) < 1.66 
-      &&
-        <Pagination.Item 
-      onClick={()=>{
-        setpage(pagination.length)
-      }}
       
-      active={page===pagination.length}>{pagination.length} </Pagination.Item>
+    <Example/>
 
-      }
-      
-
-      
-      <Pagination.Last
-      disabled={page===pagination.length} onClick={()=>{
-                setpage(last=>last+1)
-            }}
-  
-      />
-     
-    </Pagination>
-            
     </div>
   )
 }
