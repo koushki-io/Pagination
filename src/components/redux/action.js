@@ -35,3 +35,20 @@ export const EditChangeAction=(change)=>(dispatch,getdata)=>{
 
 }
 
+export const LoginAction=(data,navigate)=>(dispatch)=>{
+    dispatch({type:"Login",payload:data})
+    localStorage.setItem("login",JSON.stringify(data))
+    navigate('/')
+
+}
+export const LogOutAction=(navigate)=>(dispatch)=>{
+    dispatch({type:"Login",payload:{}})
+    localStorage.clear()
+    navigate('/')
+
+}
+
+
+
+
+

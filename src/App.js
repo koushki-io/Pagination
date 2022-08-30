@@ -2,28 +2,43 @@ import React,{useState} from "react";
 import Login from "./components/login/Login";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from "./components/home/header/Header";
 import './bootstarap/bootstrap.css'
 import "./App.css"
-import Content from "./components/home/content/Content";
+import { BrowserRouter,Routes,Route,Navigate } from "react-router-dom";
+import Home from "./components/home/home/Home";
+import { useSelector } from "react-redux";
+
 
 function App() {
   const [count, setcount] = useState()
+const login= useSelector(state=>state.getLogin)
   return (
-    <>
- {/* <Login/> */}
- <Header count={count}/>
- <Content setcount={setcount} />
- 
+    <BrowserRouter>
 
-    
+    <Routes>
+      {!Object.keys(login).length 
+      ?
+      <>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/' element={<Navigate to="/login"/>}/>
+      </>
+      :
+      <>
+      <Route path='/home' element={<Home setcount={setcount} count={count} user={login.username} />}/>
+      <Route path='/' element={<Navigate to="/home"/>}/>
 
- <ToastContainer
- theme="colored"
- />
+      </>
+      }
+      
+      
 
 
-    </>
+
+    </Routes>
+
+
+ <ToastContainer theme="colored"/>
+    </BrowserRouter>
   );
 }
 

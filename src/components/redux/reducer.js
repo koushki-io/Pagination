@@ -21,3 +21,12 @@ export const EditeReducer = (state = {}, action) => {
             return state
     }
 }
+export const LoginReducer = (state = {}, action) => {
+    switch (action.type) {
+        case "Login":
+            return action.payload
+        
+        default:
+            return state
+    }
+}

@@ -8,3 +8,7 @@
     align-items: center;
     background: gray;
 }
+.logout{
+    color: #fff;
+    cursor: pointer;
+}

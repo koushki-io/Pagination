@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { validate } from './validate'
 import { notify } from '../Alert/toast';
 import styles from './login.module.css'
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { LoginAction } from '../redux/action';
 
 
 
 
 const Login = () => {
+   const dispatch= useDispatch()
+  const navigate= useNavigate()
     const [data, setdata] = useState({
-        name:"",
         username:"",
         password:"",
     
@@ -38,6 +42,7 @@ const Login = () => {
         e.preventDefault()
         
         if(!Object.keys(erorr).length){
+                dispatch(LoginAction(data,navigate))
           notify("You signed in successFully","success")
         }else{
             notify("Invalid data!","Error")
