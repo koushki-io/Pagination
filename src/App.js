@@ -6,6 +6,7 @@ import Header from "./components/home/header/Header";
 import './bootstarap/bootstrap.css'
 import "./App.css"
 import Content from "./components/home/content/Content";
+
 function App() {
   const [count, setcount] = useState()
   return (
