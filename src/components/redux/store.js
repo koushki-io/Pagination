@@ -1,6 +1,6 @@
 import { createStore ,combineReducers,applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
-import {PostReducer} from './reducer'
+import {PostReducer,EditeReducer} from './reducer'
 const middeleware=[thunk]
 
 
@@ -9,7 +9,8 @@ const initialState={
 }
 
 const reducer=combineReducers({
-    getPosts:PostReducer
+    getPosts:PostReducer,
+    getEdite:EditeReducer,
 })
 
 

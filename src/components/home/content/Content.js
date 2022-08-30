@@ -1,18 +1,20 @@
 import React,{useEffect,useState} from 'react'
 import styles from './content.module.css'
 import { useDispatch , useSelector} from 'react-redux'
-import { PostAction } from '../../redux/action'
+import { EditPageAction, PostAction } from '../../redux/action'
 import {Pagination} from 'react-bootstrap';
 import Example from '../modal/Edite';
 
-const Content = () => {
+const Content = ({setcount}) => {
     const dispatch= useDispatch()
+    const [show, setShow] = useState(false);
     const {posts}= useSelector(state=>state.getPosts)
     const [page, setpage] = useState(1)
     const [pagination, setpagination] = useState([])
     const [paginationEnd, setpaginationEnd] = useState([])
     const [serch, setserch] = useState('')
     const [serchPost, setserchPost] = useState([])
+   
     
 
    const changeHandler=(e)=>{
@@ -25,6 +27,8 @@ const Content = () => {
     setpaginationEnd(
         serchPost.filter((item,index)=>!(index % 24))  
     )
+    setcount(serchPost.length)
+ 
    
    }, [posts,serchPost])
    useEffect(() => {
@@ -37,6 +41,20 @@ const Content = () => {
     useEffect(() => {
         dispatch(PostAction())
     }, [])
+
+
+    const EditeHandeler=(id)=>{
+        dispatch(EditPageAction(id))
+        setShow(true)
+       
+}
+
+
+
+
+
+
+
   return (
     <div className={styles.Content}>
         <h2>Post</h2>
@@ -44,16 +62,18 @@ const Content = () => {
             <input type="text" onChange={changeHandler} />
             <button 
             >Serch</button>
-            <h4>{serchPost.length}</h4>
+           
         </div>
         <div className={styles.Post}>
             {serchPost.slice((page -1) * 12 ,page * 12).map((item)=>{
                 
                 return(
                     <div key={item.id} className={styles.ContentItem}>
-                        <h2>{item.title}</h2>
+                        <h4>{item.title}</h4>
                         <p>{item.body}</p>
-                        <button>edite post</button>
+                        <button
+                        onClick={()=>EditeHandeler(item.id)}
+                        >edite post</button>
                         <h3>{item.id}</h3>
 
                     </div>
@@ -64,7 +84,7 @@ const Content = () => {
 
         {!(serchPost.length==0) &&
 
-<Pagination>
+<Pagination className={styles.pagination}>
 <Pagination.First 
   disabled={page==1}  onClick={()=>{
   setpage(last=> last - 1)
@@ -115,13 +135,15 @@ disabled={page===pagination.length} onClick={()=>{
 
 />
 
-</Pagination>
+
+</Pagination >
+
         
         
         
         }
       
-    <Example/>
+    <Example setShow={setShow} show={show}/>
 
     </div>
   )

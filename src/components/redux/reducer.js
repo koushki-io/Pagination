@@ -11,3 +11,13 @@ export const PostReducer = (state = {posts:[],loading:false,error:''}, action) =
             return state
     }
 }
+
+export const EditeReducer = (state = {}, action) => {
+    switch (action.type) {
+        case "EDITE":
+            return action.payload
+        
+        default:
+            return state
+    }
+}

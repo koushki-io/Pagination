@@ -16,3 +16,22 @@ dispatch({type:"POST-SUCCESS", payload:data})
     }
 
 }
+
+
+export const EditPageAction=(id)=>(dispatch,getdata)=>{
+    const {posts}=getdata().getPosts
+    const edite =posts.find(item=>item.id ===id)
+   dispatch({type:"EDITE" , payload:edite})
+    
+
+}
+
+export const EditChangeAction=(change)=>(dispatch,getdata)=>{
+    const {posts}=getdata().getPosts
+   posts.find(item=>item.id===change.id).title =change.title
+   posts.find(item=>item.id===change.id).body =change.body
+   dispatch({type:"EDITE" , payload:posts})
+    
+
+}
+
