@@ -47,8 +47,3 @@ export const LogOutAction=(navigate)=>(dispatch)=>{
     navigate('/')
 
 }
-
-
-
-
-

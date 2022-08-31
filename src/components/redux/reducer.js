@@ -7,6 +7,8 @@ export const PostReducer = (state = {posts:[],loading:false,error:''}, action) =
             return {...state,posts:action.payload,loading:false,error:''}
         case "POST-ERROR":
             return {...state,loading:false,error:action.payload}
+        case "POST-SERCH":
+            return {posts:action.payload}
         default:
             return state
     }
